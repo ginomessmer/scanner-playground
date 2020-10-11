@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Scanner.Names
 {
-    public class Scanner
+    public class Scanner : IScanner
     {
         private const int IgnoreChar = -1;
 
@@ -42,7 +42,7 @@ namespace Scanner.Names
         public Token NextToken()
         {
             Token token = null;
-            while (token == null)
+            while (token is null)
             {
                 var c = _input.Read();
 
