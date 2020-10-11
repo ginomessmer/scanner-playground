@@ -1,4 +1,4 @@
-namespace NameScanner
+namespace Scanner.Names
 {
     public enum TokenType
     {

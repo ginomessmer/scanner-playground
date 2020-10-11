@@ -1,13 +1,15 @@
 using System.IO;
+using Scanner.Names;
+using Scanner.Shared;
 using Xunit;
 
-namespace NameScanner
+namespace Scanner.Tests
 {
-    public class TokenTests
+    public class NameTokenTests
     {
-        public readonly Token AnnaToken = new Token(TokenType.Anna, "anna");
-        public readonly Token PeterToken = new Token(TokenType.Peter, "peter");
-        public readonly Token PetraToken = new Token(TokenType.Petra, "petra");
+        public readonly Token AnnaToken = new Token((int) TokenType.Anna, "anna");
+        public readonly Token PeterToken = new Token((int) TokenType.Peter, "peter");
+        public readonly Token PetraToken = new Token((int) TokenType.Petra, "petra");
 
         [Fact]
         public void TokenTest_Peter()
@@ -43,7 +45,7 @@ namespace NameScanner
 
         static void AssertToken(string input, params Token[] tokens)
         {
-            var scanner = new Scanner(new StringReader(input));
+            var scanner = new Names.Scanner(new StringReader(input));
             Token token;
 
             foreach (var expected in tokens)
@@ -54,7 +56,7 @@ namespace NameScanner
             }
 
             token = scanner.NextToken();
-            Assert.Equal(TokenType.EOF, token.Type);
+            Assert.Equal((int) TokenType.EOF, token.Type);
         }
     }
 }

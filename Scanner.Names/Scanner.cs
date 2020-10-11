@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Text;
+using Scanner.Shared;
 
-namespace NameScanner
+namespace Scanner.Names
 {
     public class Scanner
     {
@@ -25,7 +26,7 @@ namespace NameScanner
             Token res = null;
             if (create)
             {
-                res = new Token(_tokenType, _text.ToString());
+                res = new Token((int) _tokenType, _text.ToString());
                 _text.Clear();
             }
 

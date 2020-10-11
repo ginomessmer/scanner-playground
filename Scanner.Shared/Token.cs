@@ -1,11 +1,11 @@
-namespace NameScanner
+namespace Scanner.Shared
 {
     public class Token
     {
-        public TokenType Type { get; set; }
+        public int Type { get; set; }
         public string Text { get; set; }
 
-        public Token(TokenType type, string text)
+        public Token(int type, string text)
         {
             Type = type;
             Text = text;

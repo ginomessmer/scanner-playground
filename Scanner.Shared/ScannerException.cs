@@ -1,6 +1,6 @@
 using System;
 
-namespace NameScanner
+namespace Scanner.Shared
 {
     public class ScannerException : Exception
     {
