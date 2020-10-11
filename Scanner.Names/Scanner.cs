@@ -13,7 +13,7 @@ namespace Scanner.Names
         private readonly StringBuilder _text;
 
         private NameState _state = NameState.WS;
-        private TokenType _tokenType = TokenType.Invalid;
+        private NameTokenType _nameTokenType = NameTokenType.Invalid;
 
         public Scanner(StringReader input)
         {
@@ -21,12 +21,12 @@ namespace Scanner.Names
             _text = new StringBuilder();
         }
 
-        private Token Step(int c, NameState newState, bool create, TokenType newTokenType)
+        private Token Step(int c, NameState newState, bool create, NameTokenType newNameTokenType)
         {
             Token res = null;
             if (create)
             {
-                res = new Token((int)_tokenType, _text.ToString());
+                res = new Token((int)_nameTokenType, _text.ToString());
                 _text.Clear();
             }
 
@@ -34,7 +34,7 @@ namespace Scanner.Names
                 _text.Append((char)c);
 
             _state = newState;
-            _tokenType = newTokenType;
+            _nameTokenType = newNameTokenType;
 
             return res;
         }
@@ -50,66 +50,66 @@ namespace Scanner.Names
                 {
                     NameState.WS => c switch
                     {
-                        -1 => Step(IgnoreChar, NameState.EOF, false, TokenType.EOF),
-                        ' ' => Step(IgnoreChar, NameState.WS, false, TokenType.Invalid),
-                        'a' => Step(c, NameState.A, false, TokenType.Invalid),
-                        'p' => Step(c, NameState.P, false, TokenType.Invalid),
+                        -1 => Step(IgnoreChar, NameState.EOF, false, NameTokenType.EOF),
+                        ' ' => Step(IgnoreChar, NameState.WS, false, NameTokenType.Invalid),
+                        'a' => Step(c, NameState.A, false, NameTokenType.Invalid),
+                        'p' => Step(c, NameState.P, false, NameTokenType.Invalid),
                         _ => throw new ScannerException(c)
                     },
                     NameState.P => c switch
                     {
-                        'e' => Step(c, NameState.Pe, false, TokenType.Invalid),
+                        'e' => Step(c, NameState.Pe, false, NameTokenType.Invalid),
                         _ => throw new ScannerException(c)
                     },
                     NameState.Pe => c switch
                     {
-                        't' => Step(c, NameState.Pet, false, TokenType.Invalid),
+                        't' => Step(c, NameState.Pet, false, NameTokenType.Invalid),
                         _ => throw new ScannerException(c)
                     },
                     NameState.Pet => c switch
                     {
-                        'e' => Step(c, NameState.Pete, false, TokenType.Invalid),
-                        'r' => Step(c, NameState.Petr, false, TokenType.Invalid),
+                        'e' => Step(c, NameState.Pete, false, NameTokenType.Invalid),
+                        'r' => Step(c, NameState.Petr, false, NameTokenType.Invalid),
                         _ => throw new ScannerException(c)
                     },
                     NameState.Pete => c switch
                     {
-                        'r' => Step(c, NameState.Peter, false, TokenType.Peter),
+                        'r' => Step(c, NameState.Peter, false, NameTokenType.Peter),
                         _ => throw new ScannerException(c)
                     },
                     NameState.Petr => c switch
                     {
-                        'a' => Step(c, NameState.Petra, false, TokenType.Petra),
+                        'a' => Step(c, NameState.Petra, false, NameTokenType.Petra),
                         _ => throw new ScannerException(c)
                     },
                     NameState.A => c switch
                     {
-                        'n' => Step(c, NameState.An, false, TokenType.Invalid),
+                        'n' => Step(c, NameState.An, false, NameTokenType.Invalid),
                         _ => throw new ScannerException(c)
                     },
                     NameState.An => c switch
                     {
-                        'n' => Step(c, NameState.Ann, false, TokenType.Invalid),
+                        'n' => Step(c, NameState.Ann, false, NameTokenType.Invalid),
                         _ => throw new ScannerException(c),
                     },
                     NameState.Ann => c switch
                     {
-                        'a' => Step(c, NameState.Anna, false, TokenType.Anna),
+                        'a' => Step(c, NameState.Anna, false, NameTokenType.Anna),
                         _ => throw new ScannerException(c),
                     },
                     var x
                         when x == NameState.Peter || x == NameState.Petra || x == NameState.Anna => c switch
                         {
-                            -1 => Step(IgnoreChar, NameState.EOF, true, TokenType.EOF),
+                            -1 => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
                             var z when z.Equals(' ')
                                        || z.Equals('\t')
                                        || z.Equals('\n')
-                                       || z.Equals('\r') => Step(IgnoreChar, NameState.WS, true, TokenType.Invalid),
-                            'a' => Step(c, NameState.A, true, TokenType.Invalid),
-                            'p' => Step(c, NameState.P, true, TokenType.Invalid),
+                                       || z.Equals('\r') => Step(IgnoreChar, NameState.WS, true, NameTokenType.Invalid),
+                            'a' => Step(c, NameState.A, true, NameTokenType.Invalid),
+                            'p' => Step(c, NameState.P, true, NameTokenType.Invalid),
                             _ => throw new ScannerException(c)
                         },
-                    NameState.EOF => Step(IgnoreChar, NameState.EOF, true, TokenType.EOF),
+                    NameState.EOF => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
                     _ => throw new Exception($"Unexpected state {_state}")
                 };
             }

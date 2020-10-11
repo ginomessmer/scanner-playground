@@ -7,9 +7,9 @@ namespace Scanner.Tests
 {
     public class NameTokenTests
     {
-        public readonly Token AnnaToken = new Token((int)TokenType.Anna, "anna");
-        public readonly Token PeterToken = new Token((int)TokenType.Peter, "peter");
-        public readonly Token PetraToken = new Token((int)TokenType.Petra, "petra");
+        public readonly Token AnnaToken = new Token((int)NameTokenType.Anna, "anna");
+        public readonly Token PeterToken = new Token((int)NameTokenType.Peter, "peter");
+        public readonly Token PetraToken = new Token((int)NameTokenType.Petra, "petra");
 
         [Fact]
         public void TokenTest_Peter()
@@ -56,7 +56,7 @@ namespace Scanner.Tests
             }
 
             token = scanner.NextToken();
-            Assert.Equal((int)TokenType.EOF, token.Type);
+            Assert.Equal((int)NameTokenType.EOF, token.Type);
         }
     }
 }

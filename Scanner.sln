@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner.Tests", "Scanner.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner.Names", "Scanner.Names\Scanner.Names.csproj", "{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{89B2A763-546E-425E-850F-64E112FE90FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner.Arrays", "Scanner.Arrays\Scanner.Arrays.csproj", "{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,17 @@ Global
 		{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA} = {89B2A763-546E-425E-850F-64E112FE90FC}
+		{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E} = {89B2A763-546E-425E-850F-64E112FE90FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF8EF83D-D9C5-4148-A1B9-385023DA019E}

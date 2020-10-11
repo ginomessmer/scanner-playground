@@ -1,6 +1,6 @@
 namespace Scanner.Names
 {
-    public enum TokenType
+    public enum NameTokenType
     {
         Invalid = -1,
         EOF = 0,
