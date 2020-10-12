@@ -10,6 +10,7 @@ namespace Scanner.Tests
         public static readonly Token RsbrToken = new Token((int)ArrayTokenType.Rsbr, "]");
         public static readonly Token NameToken = new Token((int)ArrayTokenType.Name, "name");
         public static readonly Token CommaToken = new Token((int)ArrayTokenType.Comma, ",");
+        public static readonly Token NumberToken = new Token((int)ArrayTokenType.Number, "1");
 
         [Fact]
         public void ArrayTokenTest_LsbrRsbr()
@@ -27,6 +28,19 @@ namespace Scanner.Tests
         public void ArrayTokenTest_LsbrNameNameRsbr()
         {
             AssertToken("[name,name]", LsbrToken, NameToken, CommaToken, NameToken, RsbrToken);
+        }
+
+        [Fact]
+        public void ArrayTokenTest_LsbrNameNumberNameRsbr()
+        {
+            AssertToken("[name,1,name]",
+                LsbrToken,
+                NameToken,
+                CommaToken,
+                NumberToken,
+                CommaToken,
+                NameToken,
+                RsbrToken);
         }
     }
 }
