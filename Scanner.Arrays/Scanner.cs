@@ -60,70 +60,78 @@ namespace Scanner.Arrays
 
                         var number when IsNumber(number) => Step(c, ArrayState.Number, false, ArrayTokenType.Number),
 
-                        'n' => Step(c, ArrayState.N, false, ArrayTokenType.Id),
+                        'n' => Step(c, ArrayState.N, false, ArrayTokenType.Name),
 
-                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Id),
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
 
                         _ => throw new ScannerException(c)
                     },
+                    var all when
+                        all == ArrayState.Rsbr 
+                        || all == ArrayState.Lsbr 
+                        || all == ArrayState.Comma 
+                        || all == ArrayState.Number 
+                        || all == ArrayState.Name 
+                        || all == ArrayState.N 
+                        || all == ArrayState.u 
+                        || all == ArrayState.l 
+                        || all == ArrayState.Null => c switch
+                        {
+                            ' ' => Step(c, ArrayState.WS, true, ArrayTokenType.Invalid),
+                            '[' => Step(c, ArrayState.Lsbr, true, ArrayTokenType.Lsbr),
+                            ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
+                            ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
+                            _ => throw new ScannerException(c)
+                        },
                     var delimiters when
                         delimiters == ArrayState.Lsbr
                         || delimiters == ArrayState.Rsbr
                         || delimiters == ArrayState.Comma => c switch
                         {
-                            -1 => Step(IgnoreChar, ArrayState.EOF, true, ArrayTokenType.EOF),
-                            ' ' => Step(IgnoreChar, ArrayState.WS, true, ArrayTokenType.Invalid),
-                            '[' => Step(c, ArrayState.Lsbr, true, ArrayTokenType.Lsbr),
-                            ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
-                            ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
-
-                            var number when IsNumber(number) => Step(c, ArrayState.Number, true, ArrayTokenType.Number),
-
-                            'n' => Step(c, ArrayState.N, true, ArrayTokenType.Id),
-
-                            var character when IsCharacter(character) => Step(c, ArrayState.Name, true,
-                                ArrayTokenType.Name),
-
+                            var number when IsNumber(number) => Step(c, ArrayState.Number, false, ArrayTokenType.Number),
+                            'n' => Step(c, ArrayState.N, false, ArrayTokenType.Name),
+                            var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
                             _ => throw new ScannerException(c)
                         },
+                    ArrayState.Number => c switch
+                    {
+                        var number when IsNumber(number) => Step(c, ArrayState.Number, false, ArrayTokenType.Number),
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
+                        _ => throw new ScannerException(c)
+                    },
                     ArrayState.Name => c switch
                     {
-                        ' ' => Step(IgnoreChar, ArrayState.WS, true, ArrayTokenType.Invalid),
-                        var x when IsCharacter(x) => Step(c, ArrayState.Name, false, ArrayTokenType.Invalid),
+                        var input when IsNumber(input) || IsCharacter(input) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
                         _ => throw new ScannerException(c)
-                    }
+                    },
+                    ArrayState.N => c switch
+                    {
+                        'u' => Step(c, ArrayState.u, false, ArrayTokenType.Name),
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
+                        _ => throw new ScannerException(c)
+                    },
+                    ArrayState.u => c switch
+                    {
+                        'l' => Step(c, ArrayState.l, false, ArrayTokenType.Name),
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
+                        _ => throw new ScannerException(c)
+                    },
+                    ArrayState.l => c switch
+                    {
+                        'l' => Step(c, ArrayState.Null, false, ArrayTokenType.Null),
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
+                        _ => throw new ScannerException(c)
+                    },
+                    ArrayState.Null => c switch
+                    {
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
+                        _ => throw new ScannerException(c)
+                    },
+                    _ => throw new Exception("Unknown state")
                 };
             }
 
             return token;
         }
-    }
-
-    enum ArrayState
-    {
-        WS,
-        Lsbr,
-        Rsbr,
-        Comma,
-        Number,
-        Name,
-        N,
-        Nu,
-        Nul,
-        Null,
-        EOF
-    }
-
-    enum ArrayTokenType
-    {
-        Invalid = -1,
-        Lsbr,
-        Rsbr,
-        Comma,
-        Number,
-        Name,
-        Id,
-        Null,
-        EOF
     }
 }
