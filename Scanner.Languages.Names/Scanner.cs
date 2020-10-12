@@ -7,8 +7,6 @@ namespace Scanner.Languages.Names
 {
     public class Scanner : BaseScanner
     {
-        private const int IgnoreChar = -1;
-
         private NameState _state = NameState.WS;
         private NameTokenType _nameTokenType = NameTokenType.Invalid;
 

@@ -7,8 +7,6 @@ namespace Scanner.Languages.Arrays
 {
     public class Scanner : BaseScanner
     {
-        private const int IgnoreChar = -1;
-
         private ArrayState _state = ArrayState.WS;
         private ArrayTokenType _nameTokenType = ArrayTokenType.Invalid;
 
