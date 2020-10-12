@@ -7,20 +7,15 @@ using static Scanner.Shared.ScannerHelper;
 
 namespace Scanner.Arrays
 {
-    public class Scanner : IScanner
+    public class Scanner : BaseScanner
     {
         private const int IgnoreChar = -1;
-
-        private readonly StringReader _input;
-        private readonly StringBuilder _text;
 
         private ArrayState _state = ArrayState.WS;
         private ArrayTokenType _nameTokenType = ArrayTokenType.Invalid;
 
-        public Scanner(StringReader input)
+        public Scanner(StringReader input) : base(input)
         {
-            _input = input;
-            _text = new StringBuilder();
         }
 
         private Token Step(int c, ArrayState newState, bool create, ArrayTokenType newNameTokenType)
@@ -41,7 +36,7 @@ namespace Scanner.Arrays
             return res;
         }
 
-        public Token NextToken()
+        public override Token NextToken()
         {
             Token token = null;
             while (token is null)
@@ -66,9 +61,14 @@ namespace Scanner.Arrays
 
                         _ => throw new ScannerException(c)
                     },
+                    ArrayState.Rsbr => c switch
+                    {
+                        -1 => Step(c, ArrayState.EOF, true, ArrayTokenType.EOF),
+                        _ => throw new Exception("Unknown state")
+                    },
                     var all when
-                        all == ArrayState.Rsbr 
-                        || all == ArrayState.Lsbr 
+                        all == ArrayState.Lsbr 
+                        || all == ArrayState.Rsbr 
                         || all == ArrayState.Comma 
                         || all == ArrayState.Number 
                         || all == ArrayState.Name 
@@ -127,6 +127,7 @@ namespace Scanner.Arrays
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
                         _ => throw new ScannerException(c)
                     },
+                    ArrayState.EOF => Step(IgnoreChar, ArrayState.EOF, true, ArrayTokenType.EOF),
                     _ => throw new Exception("Unknown state")
                 };
             }

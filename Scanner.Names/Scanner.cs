@@ -6,20 +6,15 @@ using static Scanner.Shared.ScannerHelper;
 
 namespace Scanner.Names
 {
-    public class Scanner : IScanner
+    public class Scanner : BaseScanner
     {
         private const int IgnoreChar = -1;
-
-        private readonly StringReader _input;
-        private readonly StringBuilder _text;
 
         private NameState _state = NameState.WS;
         private NameTokenType _nameTokenType = NameTokenType.Invalid;
 
-        public Scanner(StringReader input)
+        public Scanner(StringReader input) : base(input)
         {
-            _input = input;
-            _text = new StringBuilder();
         }
 
         private Token Step(int c, NameState newState, bool create, NameTokenType newNameTokenType)
@@ -40,7 +35,7 @@ namespace Scanner.Names
             return res;
         }
 
-        public Token NextToken()
+        public override Token NextToken()
         {
             Token token = null;
             while (token is null)

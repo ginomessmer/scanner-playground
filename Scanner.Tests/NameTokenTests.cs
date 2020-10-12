@@ -4,11 +4,11 @@ using Xunit;
 
 namespace Scanner.Tests
 {
-    public class NameTokenTests : TokenTestBase
+    public class NameTokenTests : TokenTestBase<Names.Scanner>
     {
-        public readonly Token AnnaToken = new Token((int)NameTokenType.Anna, "anna");
-        public readonly Token PeterToken = new Token((int)NameTokenType.Peter, "peter");
-        public readonly Token PetraToken = new Token((int)NameTokenType.Petra, "petra");
+        public static readonly Token AnnaToken = new Token((int)NameTokenType.Anna, "anna");
+        public static readonly Token PeterToken = new Token((int)NameTokenType.Peter, "peter");
+        public static readonly Token PetraToken = new Token((int)NameTokenType.Petra, "petra");
 
         [Fact]
         public void TokenTest_Peter()
