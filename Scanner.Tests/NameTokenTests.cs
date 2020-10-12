@@ -4,15 +4,6 @@ using Xunit;
 
 namespace Scanner.Tests
 {
-    public class ArrayTokenTests : TokenTestBase
-    {
-        [Fact]
-        public void ArrayTokenTest_Lsbr()
-        {
-            AssertToken("[");
-        }
-    }
-
     public class NameTokenTests : TokenTestBase
     {
         public readonly Token AnnaToken = new Token((int)NameTokenType.Anna, "anna");

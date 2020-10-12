@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Scanner.Tests
 {
-    public abstract class TokenTestBase<T> where T : IScanner
+    public abstract class TokenTestBase
     {
         public void AssertToken(string input, params Token[] tokens)
         {
