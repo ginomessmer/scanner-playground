@@ -2,8 +2,8 @@ namespace Scanner.Shared
 {
     public class Token
     {
-        public int Type { get; set; }
-        public string Text { get; set; }
+        public int Type { get; }
+        public string Text { get; }
 
         public Token(int type, string text)
         {

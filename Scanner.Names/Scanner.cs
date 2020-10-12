@@ -2,6 +2,7 @@ using Scanner.Shared;
 using System;
 using System.IO;
 using System.Text;
+using static Scanner.Shared.ScannerHelper;
 
 namespace Scanner.Names
 {
@@ -101,10 +102,7 @@ namespace Scanner.Names
                         when x == NameState.Peter || x == NameState.Petra || x == NameState.Anna => c switch
                         {
                             -1 => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
-                            var z when z.Equals(' ')
-                                       || z.Equals('\t')
-                                       || z.Equals('\n')
-                                       || z.Equals('\r') => Step(IgnoreChar, NameState.WS, true, NameTokenType.Invalid),
+                            var z when IsSpacing(z) => Step(IgnoreChar, NameState.WS, true, NameTokenType.Invalid),
                             'a' => Step(c, NameState.A, true, NameTokenType.Invalid),
                             'p' => Step(c, NameState.P, true, NameTokenType.Invalid),
                             _ => throw new ScannerException(c)

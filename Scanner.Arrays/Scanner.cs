@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Scanner.Shared;
+using static Scanner.Shared.ScannerHelper;
 
 namespace Scanner.Arrays
 {
@@ -61,34 +62,41 @@ namespace Scanner.Arrays
 
                         'n' => Step(c, ArrayState.N, false, ArrayTokenType.Id),
 
-                        var character when 
-                            IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Id),
+                        var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Id),
 
                         _ => throw new ScannerException(c)
                     },
-                    var delimiters when delimiters == ArrayState.Lsbr || delimiters == ArrayState.Rsbr || delimiters == ArrayState.Comma => c switch
+                    var delimiters when
+                        delimiters == ArrayState.Lsbr
+                        || delimiters == ArrayState.Rsbr
+                        || delimiters == ArrayState.Comma => c switch
+                        {
+                            -1 => Step(IgnoreChar, ArrayState.EOF, true, ArrayTokenType.EOF),
+                            ' ' => Step(IgnoreChar, ArrayState.WS, true, ArrayTokenType.Invalid),
+                            '[' => Step(c, ArrayState.Lsbr, true, ArrayTokenType.Lsbr),
+                            ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
+                            ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
+
+                            var number when IsNumber(number) => Step(c, ArrayState.Number, true, ArrayTokenType.Number),
+
+                            'n' => Step(c, ArrayState.N, true, ArrayTokenType.Id),
+
+                            var character when IsCharacter(character) => Step(c, ArrayState.Name, true,
+                                ArrayTokenType.Name),
+
+                            _ => throw new ScannerException(c)
+                        },
+                    ArrayState.Name => c switch
                     {
-                        -1 => Step(IgnoreChar, ArrayState.EOF, true, ArrayTokenType.EOF),
                         ' ' => Step(IgnoreChar, ArrayState.WS, true, ArrayTokenType.Invalid),
-                        '[' => Step(c, ArrayState.Lsbr, true, ArrayTokenType.Lsbr),
-                        ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
-                        ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
-
-                        var number when IsNumber(number) => Step(c, ArrayState.Number, true, ArrayTokenType.Number),
-
-                        'n' => Step(c, ArrayState.N, true, ArrayTokenType.Id),
-                        // TODO
+                        var x when IsCharacter(x) => Step(c, ArrayState.Name, false, ArrayTokenType.Invalid),
+                        _ => throw new ScannerException(c)
                     }
                 };
             }
 
             return token;
         }
-
-
-        private static readonly char[] Numbers = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
-        private static bool IsNumber(int c) => Numbers.Contains((char) c);
-        private static bool IsCharacter(int c) => 'a' <= c && c <= 'z' || 'A' <= c & c <= 'Z';
     }
 
     enum ArrayState
