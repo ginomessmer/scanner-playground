@@ -1,10 +1,10 @@
-using Scanner.Names;
+using Scanner.Languages.Names;
 using Scanner.Shared;
 using Xunit;
 
 namespace Scanner.Tests
 {
-    public class NameTokenTests : TokenTestBase<Names.Scanner>
+    public class NameTokenTests : TokenTestBase<Languages.Names.Scanner>
     {
         public static readonly Token AnnaToken = new Token((int)NameTokenType.Anna, "anna");
         public static readonly Token PeterToken = new Token((int)NameTokenType.Peter, "peter");

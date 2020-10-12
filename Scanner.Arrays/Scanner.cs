@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Scanner.Shared;
 using static Scanner.Shared.ScannerHelper;
 
-namespace Scanner.Arrays
+namespace Scanner.Languages.Arrays
 {
     public class Scanner : BaseScanner
     {

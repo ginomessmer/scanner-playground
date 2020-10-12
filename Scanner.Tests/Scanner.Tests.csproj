@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scanner.Arrays\Scanner.Arrays.csproj" />
-    <ProjectReference Include="..\Scanner.Names\Scanner.Names.csproj" />
+    <ProjectReference Include="..\Scanner.Arrays\Scanner.Languages.Arrays.csproj" />
+    <ProjectReference Include="..\Scanner.Names\Scanner.Languages.Names.csproj" />
     <ProjectReference Include="..\Scanner.Shared\Scanner.Shared.csproj" />
   </ItemGroup>
 

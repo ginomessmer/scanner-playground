@@ -1,4 +1,4 @@
-﻿namespace Scanner.Arrays
+﻿namespace Scanner.Languages.Arrays
 {
     public enum ArrayState
     {

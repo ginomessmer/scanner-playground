@@ -1,10 +1,9 @@
-using Scanner.Shared;
 using System;
 using System.IO;
-using System.Text;
+using Scanner.Shared;
 using static Scanner.Shared.ScannerHelper;
 
-namespace Scanner.Names
+namespace Scanner.Languages.Names
 {
     public class Scanner : BaseScanner
     {

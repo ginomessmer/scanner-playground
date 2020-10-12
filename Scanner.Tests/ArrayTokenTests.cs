@@ -1,10 +1,10 @@
-using Scanner.Arrays;
+using Scanner.Languages.Arrays;
 using Scanner.Shared;
 using Xunit;
 
 namespace Scanner.Tests
 {
-    public class ArrayTokenTests : TokenTestBase<Arrays.Scanner>
+    public class ArrayTokenTests : TokenTestBase<Languages.Arrays.Scanner>
     {
         public static readonly Token LsbrToken = new Token((int)ArrayTokenType.Lsbr, "[");
         public static readonly Token RsbrToken = new Token((int)ArrayTokenType.Rsbr, "]");

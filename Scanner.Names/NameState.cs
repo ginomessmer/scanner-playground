@@ -1,4 +1,4 @@
-namespace Scanner.Names
+namespace Scanner.Languages.Names
 {
     public enum NameState
     {
