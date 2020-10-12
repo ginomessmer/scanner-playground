@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scanner.Shared", "Scanner.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scanner.Tests", "Scanner.Tests\Scanner.Tests.csproj", "{BA06310D-6D1A-4358-8EBB-E780E3F3FEAB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scanner.Languages.Names", "Scanner.Names\Scanner.Languages.Names.csproj", "{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scanner.Languages.Names", "Scanner.Languages.Names\Scanner.Languages.Names.csproj", "{EB0FB585-47ED-4EFA-94A1-4AB906B5E3DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{89B2A763-546E-425E-850F-64E112FE90FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scanner.Languages.Arrays", "Scanner.Arrays\Scanner.Languages.Arrays.csproj", "{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scanner.Languages.Arrays", "Scanner.Languages.Arrays\Scanner.Languages.Arrays.csproj", "{F046B9DB-CD6F-45F2-AD6D-7D7C29E2790E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

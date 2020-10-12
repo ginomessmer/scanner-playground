@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Scanner.Shared;
+using System;
 using System.IO;
-using Scanner.Shared;
 using static Scanner.Shared.ScannerHelper;
 
 namespace Scanner.Languages.Arrays

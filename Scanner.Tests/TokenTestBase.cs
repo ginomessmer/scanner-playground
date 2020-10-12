@@ -1,6 +1,6 @@
+using Scanner.Shared;
 using System;
 using System.IO;
-using Scanner.Shared;
 using Xunit;
 
 namespace Scanner.Tests
