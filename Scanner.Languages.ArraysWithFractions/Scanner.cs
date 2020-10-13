@@ -20,12 +20,12 @@ namespace Scanner.Languages.ArraysWithFractions
             Token res = null;
             if (create)
             {
-                res = new Token((int)_arrayTokenType, _text.ToString());
-                _text.Clear();
+                res = new Token((int)_arrayTokenType, Text.ToString());
+                Text.Clear();
             }
 
             if (character != IgnoreChar)
-                _text.Append((char)character);
+                Text.Append((char)character);
 
             CurrentState = newState;
             _arrayTokenType = newArrayTokenType;
@@ -38,7 +38,7 @@ namespace Scanner.Languages.ArraysWithFractions
             Token token = null;
             while (token is null)
             {
-                var c = _input.Read();
+                var c = Input.Read();
 
                 token = CurrentState switch
                 {
