@@ -6,7 +6,7 @@ namespace Scanner.Languages.Names
 {
     public class Scanner : BaseScanner
     {
-        public NameState CurrentState { get; private set; } = NameState.WS;
+        public NameState CurrentState { get; private set; } = NameState.Whitespace;
 
         private NameTokenType _nameTokenType = NameTokenType.Void;
 
@@ -41,10 +41,10 @@ namespace Scanner.Languages.Names
 
                 token = CurrentState switch
                 {
-                    NameState.WS => c switch
+                    NameState.Whitespace => c switch
                     {
-                        -1 => Step(IgnoreChar, NameState.EOF, NameTokenType.EndOfFile),
-                        ' ' => Step(IgnoreChar, NameState.WS, NameTokenType.Void),
+                        -1 => Step(IgnoreChar, NameState.EndOfFile, NameTokenType.EndOfFile),
+                        ' ' => Step(IgnoreChar, NameState.Whitespace, NameTokenType.Void),
                         'a' => Step(c, NameState.A, NameTokenType.Void),
                         'p' => Step(c, NameState.P, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c)
@@ -93,13 +93,13 @@ namespace Scanner.Languages.Names
                     var x
                         when x == NameState.Peter || x == NameState.Petra || x == NameState.Anna => c switch
                         {
-                            -1 => Step(IgnoreChar, NameState.EOF, NameTokenType.EndOfFile, true),
-                            var z when IsSpacing(z) => Step(IgnoreChar, NameState.WS, NameTokenType.Void, true),
+                            -1 => Step(IgnoreChar, NameState.EndOfFile, NameTokenType.EndOfFile, true),
+                            var z when IsSpacing(z) => Step(IgnoreChar, NameState.Whitespace, NameTokenType.Void, true),
                             'a' => Step(c, NameState.A, NameTokenType.Void, true),
                             'p' => Step(c, NameState.P, NameTokenType.Void, true),
                             _ => throw new ScannerTokenException(c)
                         },
-                    NameState.EOF => Step(IgnoreChar, NameState.EOF, NameTokenType.EndOfFile, true),
+                    NameState.EndOfFile => Step(IgnoreChar, NameState.EndOfFile, NameTokenType.EndOfFile, true),
                     _ => throw new ScannerStateException(CurrentState.ToString())
                 };
             }
