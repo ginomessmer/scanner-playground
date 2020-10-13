@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scanner.Languages.ArraysWithFractions\Scanner.Languages.ArraysWithFractions.csproj" />
     <ProjectReference Include="..\Scanner.Languages.Arrays\Scanner.Languages.Arrays.csproj" />
     <ProjectReference Include="..\Scanner.Languages.Names\Scanner.Languages.Names.csproj" />
     <ProjectReference Include="..\Scanner.Shared\Scanner.Shared.csproj" />

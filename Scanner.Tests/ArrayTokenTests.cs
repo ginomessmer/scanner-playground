@@ -1,4 +1,3 @@
-using System;
 using Scanner.Languages.Arrays;
 using Scanner.Shared;
 using Xunit;
