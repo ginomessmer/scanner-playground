@@ -10,5 +10,7 @@ namespace Scanner.Shared
             Type = type;
             Text = text;
         }
+
+        public Token SetText(string text) => new Token(Type, text);
     }
 }

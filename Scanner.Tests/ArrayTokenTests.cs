@@ -71,5 +71,18 @@ namespace Scanner.Tests
                 NameToken,
                 RsbrToken);
         }
+
+        [Fact]
+        public void ArrayTokenTest_LsbrNumberNumberNumberRsbr()
+        {
+            AssertToken("[1,1,22]",
+                LsbrToken,
+                NumberToken,
+                CommaToken,
+                NumberToken,
+                CommaToken,
+                NumberToken.SetText("22"),
+                RsbrToken);
+        }
     }
 }
