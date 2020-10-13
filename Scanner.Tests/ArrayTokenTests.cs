@@ -1,3 +1,4 @@
+using System;
 using Scanner.Languages.Arrays;
 using Scanner.Shared;
 using Xunit;
@@ -73,6 +74,21 @@ namespace Scanner.Tests
         }
 
         [Fact]
+        public void ArrayTokenTest_LsbrNameNullNumberNameWithNumberRsbr()
+        {
+            AssertToken("[name,null,1,name123]",
+                LsbrToken,
+                NameToken,
+                CommaToken,
+                NullToken,
+                CommaToken,
+                NumberToken,
+                CommaToken,
+                NameToken.SetText(("name123")),
+                RsbrToken);
+        }
+
+        [Fact]
         public void ArrayTokenTest_LsbrNumberNumberNumberRsbr()
         {
             AssertToken("[1,1,22]",
@@ -84,5 +100,13 @@ namespace Scanner.Tests
                 NumberToken.SetText("22"),
                 RsbrToken);
         }
+
+        [Fact]
+        public void ArrayTokenTest_MissingRsbr_ExpectScannerException() =>
+            Assert.Throws<ScannerTokenException>(() => AssertToken("[", LsbrToken));
+
+        [Fact]
+        public void ArrayTokenTest_InvalidDeclarationWithoutBr_ExpectScannerException() =>
+            Assert.Throws<ScannerTokenException>(() => AssertToken("name", LsbrToken));
     }
 }

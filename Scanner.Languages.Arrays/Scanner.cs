@@ -56,7 +56,7 @@ namespace Scanner.Languages.Arrays
 
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, false, ArrayTokenType.Name),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.Rsbr => c switch
                     {
@@ -77,7 +77,7 @@ namespace Scanner.Languages.Arrays
                             ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                             ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                            _ => throw new ScannerException(c)
+                            _ => throw new ScannerTokenException(c)
                         },
                     ArrayState.Number => c switch
                     {
@@ -89,7 +89,7 @@ namespace Scanner.Languages.Arrays
                         ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.Name => c switch
                     {
@@ -100,7 +100,7 @@ namespace Scanner.Languages.Arrays
                         ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.N => c switch
                     {
@@ -112,7 +112,7 @@ namespace Scanner.Languages.Arrays
                         ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.u => c switch
                     {
@@ -125,7 +125,7 @@ namespace Scanner.Languages.Arrays
                         ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.l => c switch
                     {
@@ -138,7 +138,7 @@ namespace Scanner.Languages.Arrays
                         ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.Null => c switch
                     {
@@ -149,10 +149,10 @@ namespace Scanner.Languages.Arrays
                         ']' => Step(c, ArrayState.Rsbr, true, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, true, ArrayTokenType.Comma),
 
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     ArrayState.EOF => Step(IgnoreChar, ArrayState.EOF, true, ArrayTokenType.EOF),
-                    _ => throw new Exception("Unknown state")
+                    _ => throw new ScannerStateException(_currentState.ToString())
                 };
             }
 

@@ -47,48 +47,48 @@ namespace Scanner.Languages.Names
                         ' ' => Step(IgnoreChar, NameState.WS, false, NameTokenType.Invalid),
                         'a' => Step(c, NameState.A, false, NameTokenType.Invalid),
                         'p' => Step(c, NameState.P, false, NameTokenType.Invalid),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.P => c switch
                     {
                         'e' => Step(c, NameState.Pe, false, NameTokenType.Invalid),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.Pe => c switch
                     {
                         't' => Step(c, NameState.Pet, false, NameTokenType.Invalid),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.Pet => c switch
                     {
                         'e' => Step(c, NameState.Pete, false, NameTokenType.Invalid),
                         'r' => Step(c, NameState.Petr, false, NameTokenType.Invalid),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.Pete => c switch
                     {
                         'r' => Step(c, NameState.Peter, false, NameTokenType.Peter),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.Petr => c switch
                     {
                         'a' => Step(c, NameState.Petra, false, NameTokenType.Petra),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.A => c switch
                     {
                         'n' => Step(c, NameState.An, false, NameTokenType.Invalid),
-                        _ => throw new ScannerException(c)
+                        _ => throw new ScannerTokenException(c)
                     },
                     NameState.An => c switch
                     {
                         'n' => Step(c, NameState.Ann, false, NameTokenType.Invalid),
-                        _ => throw new ScannerException(c),
+                        _ => throw new ScannerTokenException(c),
                     },
                     NameState.Ann => c switch
                     {
                         'a' => Step(c, NameState.Anna, false, NameTokenType.Anna),
-                        _ => throw new ScannerException(c),
+                        _ => throw new ScannerTokenException(c),
                     },
                     var x
                         when x == NameState.Peter || x == NameState.Petra || x == NameState.Anna => c switch
@@ -97,10 +97,10 @@ namespace Scanner.Languages.Names
                             var z when IsSpacing(z) => Step(IgnoreChar, NameState.WS, true, NameTokenType.Invalid),
                             'a' => Step(c, NameState.A, true, NameTokenType.Invalid),
                             'p' => Step(c, NameState.P, true, NameTokenType.Invalid),
-                            _ => throw new ScannerException(c)
+                            _ => throw new ScannerTokenException(c)
                         },
                     NameState.EOF => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
-                    _ => throw new Exception($"Unexpected state {_currentState}")
+                    _ => throw new ScannerStateException(_currentState.ToString())
                 };
             }
 
