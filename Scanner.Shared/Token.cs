@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Scanner.Shared
 {
     public class Token

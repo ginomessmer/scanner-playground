@@ -2,6 +2,7 @@ namespace Scanner.Languages.Names
 {
     public enum NameState
     {
+        EOF = -1,
         WS,
         P,
         Pe,
@@ -14,6 +15,5 @@ namespace Scanner.Languages.Names
         An,
         Ann,
         Anna,
-        EOF
     }
 }

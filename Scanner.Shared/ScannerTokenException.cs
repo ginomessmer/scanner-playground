@@ -9,7 +9,7 @@ namespace Scanner.Shared
 
         public ScannerTokenException(int character)
         {
-            Character = (char) character;
+            Character = (char)character;
         }
     }
 }

@@ -3,7 +3,7 @@
     public enum ArrayTokenType
     {
         Void = -1,
-        EOF,
+        EndOfFile,
         Lsbr,
         Rsbr,
         Comma,

@@ -1,5 +1,4 @@
 using Scanner.Shared;
-using System;
 using System.IO;
 using static Scanner.Shared.ScannerHelper;
 
@@ -9,13 +8,13 @@ namespace Scanner.Languages.Names
     {
         public NameState CurrentState { get; private set; } = NameState.WS;
 
-        private NameTokenType _nameTokenType = NameTokenType.Invalid;
+        private NameTokenType _nameTokenType = NameTokenType.Void;
 
         public Scanner(StringReader input) : base(input)
         {
         }
 
-        private Token Step(int c, NameState newState, bool create, NameTokenType newNameTokenType)
+        private Token Step(int character, NameState newState, NameTokenType newNameTokenType, bool create = false)
         {
             Token res = null;
             if (create)
@@ -24,8 +23,8 @@ namespace Scanner.Languages.Names
                 _text.Clear();
             }
 
-            if (c != IgnoreChar)
-                _text.Append((char)c);
+            if (character != IgnoreChar)
+                _text.Append((char)character);
 
             CurrentState = newState;
             _nameTokenType = newNameTokenType;
@@ -44,63 +43,63 @@ namespace Scanner.Languages.Names
                 {
                     NameState.WS => c switch
                     {
-                        -1 => Step(IgnoreChar, NameState.EOF, false, NameTokenType.EOF),
-                        ' ' => Step(IgnoreChar, NameState.WS, false, NameTokenType.Invalid),
-                        'a' => Step(c, NameState.A, false, NameTokenType.Invalid),
-                        'p' => Step(c, NameState.P, false, NameTokenType.Invalid),
+                        -1 => Step(IgnoreChar, NameState.EOF, NameTokenType.EndOfFile),
+                        ' ' => Step(IgnoreChar, NameState.WS, NameTokenType.Void),
+                        'a' => Step(c, NameState.A, NameTokenType.Void),
+                        'p' => Step(c, NameState.P, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.P => c switch
                     {
-                        'e' => Step(c, NameState.Pe, false, NameTokenType.Invalid),
+                        'e' => Step(c, NameState.Pe, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.Pe => c switch
                     {
-                        't' => Step(c, NameState.Pet, false, NameTokenType.Invalid),
+                        't' => Step(c, NameState.Pet, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.Pet => c switch
                     {
-                        'e' => Step(c, NameState.Pete, false, NameTokenType.Invalid),
-                        'r' => Step(c, NameState.Petr, false, NameTokenType.Invalid),
+                        'e' => Step(c, NameState.Pete, NameTokenType.Void),
+                        'r' => Step(c, NameState.Petr, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.Pete => c switch
                     {
-                        'r' => Step(c, NameState.Peter, false, NameTokenType.Peter),
+                        'r' => Step(c, NameState.Peter, NameTokenType.Peter),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.Petr => c switch
                     {
-                        'a' => Step(c, NameState.Petra, false, NameTokenType.Petra),
+                        'a' => Step(c, NameState.Petra, NameTokenType.Petra),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.A => c switch
                     {
-                        'n' => Step(c, NameState.An, false, NameTokenType.Invalid),
+                        'n' => Step(c, NameState.An, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c)
                     },
                     NameState.An => c switch
                     {
-                        'n' => Step(c, NameState.Ann, false, NameTokenType.Invalid),
+                        'n' => Step(c, NameState.Ann, NameTokenType.Void),
                         _ => throw new ScannerTokenException(c),
                     },
                     NameState.Ann => c switch
                     {
-                        'a' => Step(c, NameState.Anna, false, NameTokenType.Anna),
+                        'a' => Step(c, NameState.Anna, NameTokenType.Anna),
                         _ => throw new ScannerTokenException(c),
                     },
                     var x
                         when x == NameState.Peter || x == NameState.Petra || x == NameState.Anna => c switch
                         {
-                            -1 => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
-                            var z when IsSpacing(z) => Step(IgnoreChar, NameState.WS, true, NameTokenType.Invalid),
-                            'a' => Step(c, NameState.A, true, NameTokenType.Invalid),
-                            'p' => Step(c, NameState.P, true, NameTokenType.Invalid),
+                            -1 => Step(IgnoreChar, NameState.EOF, NameTokenType.EndOfFile, true),
+                            var z when IsSpacing(z) => Step(IgnoreChar, NameState.WS, NameTokenType.Void, true),
+                            'a' => Step(c, NameState.A, NameTokenType.Void, true),
+                            'p' => Step(c, NameState.P, NameTokenType.Void, true),
                             _ => throw new ScannerTokenException(c)
                         },
-                    NameState.EOF => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
+                    NameState.EOF => Step(IgnoreChar, NameState.EOF, NameTokenType.EndOfFile, true),
                     _ => throw new ScannerStateException(CurrentState.ToString())
                 };
             }

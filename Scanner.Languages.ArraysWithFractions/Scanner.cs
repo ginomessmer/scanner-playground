@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Scanner.Shared;
+using System;
 using System.IO;
-using Scanner.Shared;
 using static Scanner.Shared.ScannerHelper;
 
 namespace Scanner.Languages.ArraysWithFractions
 {
     public class Scanner : BaseScanner
     {
-        public ArrayState CurrentState { get; private set; } = ArrayState.WS;
+        public ArrayState CurrentState { get; private set; } = ArrayState.Whitespace;
 
         private ArrayTokenType _arrayTokenType = ArrayTokenType.Void;
 
@@ -15,7 +15,7 @@ namespace Scanner.Languages.ArraysWithFractions
         {
         }
 
-        private Token Step(int character, ArrayState newState, ArrayTokenType newNameTokenType, bool create = false)
+        private Token Step(int character, ArrayState newState, ArrayTokenType newArrayTokenType, bool create = false)
         {
             Token res = null;
             if (create)
@@ -28,7 +28,7 @@ namespace Scanner.Languages.ArraysWithFractions
                 _text.Append((char)character);
 
             CurrentState = newState;
-            _arrayTokenType = newNameTokenType;
+            _arrayTokenType = newArrayTokenType;
 
             return res;
         }
@@ -42,11 +42,11 @@ namespace Scanner.Languages.ArraysWithFractions
 
                 token = CurrentState switch
                 {
-                    ArrayState.WS => c switch
+                    ArrayState.Whitespace => c switch
                     {
-                        -1 => Step(c, ArrayState.EOF, ArrayTokenType.EOF),
+                        -1 => Step(c, ArrayState.EndOfFile, ArrayTokenType.EndOfFile),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma),
@@ -61,7 +61,7 @@ namespace Scanner.Languages.ArraysWithFractions
                     },
                     ArrayState.Rsbr => c switch
                     {
-                        -1 => Step(c, ArrayState.EOF, ArrayTokenType.EOF, true),
+                        -1 => Step(c, ArrayState.EndOfFile, ArrayTokenType.EndOfFile, true),
                         _ => throw new Exception("Unknown state")
                     },
                     var delimiters when
@@ -73,7 +73,7 @@ namespace Scanner.Languages.ArraysWithFractions
                             'n' => Step(c, ArrayState.N, ArrayTokenType.Name, true),
                             var character when IsCharacter(character) => Step(c, ArrayState.Name, ArrayTokenType.Name, true),
 
-                            ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                            ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                             '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                             ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                             ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -85,7 +85,7 @@ namespace Scanner.Languages.ArraysWithFractions
                         var number when IsNumber(number) => Step(c, ArrayState.Number, ArrayTokenType.Number),
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, ArrayTokenType.Name),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -98,7 +98,7 @@ namespace Scanner.Languages.ArraysWithFractions
                     {
                         var input when IsNumber(input) || IsCharacter(input) => Step(c, ArrayState.Name, ArrayTokenType.Name),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -107,36 +107,36 @@ namespace Scanner.Languages.ArraysWithFractions
                     },
                     ArrayState.N => c switch
                     {
-                        'u' => Step(c, ArrayState.u, ArrayTokenType.Name),
+                        'u' => Step(c, ArrayState.Nu, ArrayTokenType.Name),
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, ArrayTokenType.Name),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
 
                         _ => throw new ScannerTokenException(c)
                     },
-                    ArrayState.u => c switch
+                    ArrayState.Nu => c switch
                     {
-                        'l' => Step(c, ArrayState.l, ArrayTokenType.Name),
+                        'l' => Step(c, ArrayState.Nul, ArrayTokenType.Name),
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, ArrayTokenType.Name),
 
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
 
                         _ => throw new ScannerTokenException(c)
                     },
-                    ArrayState.l => c switch
+                    ArrayState.Nul => c switch
                     {
                         'l' => Step(c, ArrayState.Null, ArrayTokenType.Null),
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, ArrayTokenType.Name),
 
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -147,7 +147,7 @@ namespace Scanner.Languages.ArraysWithFractions
                     {
                         var character when IsCharacter(character) => Step(c, ArrayState.Name, ArrayTokenType.Name),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -159,7 +159,7 @@ namespace Scanner.Languages.ArraysWithFractions
                         var number when IsNumber(number) => Step(c, ArrayState.Fraction, ArrayTokenType.Fraction),
                         '^' => Step(c, ArrayState.Circumflex, ArrayTokenType.Void),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -172,7 +172,7 @@ namespace Scanner.Languages.ArraysWithFractions
                         var number when IsNumber(number) => Step(c, ArrayState.Fraction, ArrayTokenType.Fraction),
                         '^' => Step(c, ArrayState.Circumflex, ArrayTokenType.Void),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -182,15 +182,15 @@ namespace Scanner.Languages.ArraysWithFractions
                     },
                     ArrayState.Circumflex => c switch
                     {
-                        var number when IsNumber(number) => Step(c, ArrayState.Exp, ArrayTokenType.Fraction),
+                        var number when IsNumber(number) => Step(c, ArrayState.Exponential, ArrayTokenType.Fraction),
 
                         _ => throw new ScannerTokenException(c)
                     },
-                    ArrayState.Exp => c switch
+                    ArrayState.Exponential => c switch
                     {
-                        var number when IsNumber(number) => Step(c, ArrayState.Exp, ArrayTokenType.Fraction),
+                        var number when IsNumber(number) => Step(c, ArrayState.Exponential, ArrayTokenType.Fraction),
 
-                        ' ' => Step(c, ArrayState.WS, ArrayTokenType.Void, true),
+                        ' ' => Step(c, ArrayState.Whitespace, ArrayTokenType.Void, true),
                         '[' => Step(c, ArrayState.Lsbr, ArrayTokenType.Lsbr, true),
                         ']' => Step(c, ArrayState.Rsbr, ArrayTokenType.Rsbr, true),
                         ',' => Step(c, ArrayState.Comma, ArrayTokenType.Comma, true),
@@ -198,7 +198,7 @@ namespace Scanner.Languages.ArraysWithFractions
 
                         _ => throw new ScannerTokenException(c)
                     },
-                    ArrayState.EOF => Step(IgnoreChar, ArrayState.EOF, ArrayTokenType.EOF, true),
+                    ArrayState.EndOfFile => Step(IgnoreChar, ArrayState.EndOfFile, ArrayTokenType.EndOfFile, true),
                     _ => throw new ScannerStateException(CurrentState.ToString())
                 };
             }

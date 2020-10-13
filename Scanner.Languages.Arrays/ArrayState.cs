@@ -2,16 +2,16 @@
 {
     public enum ArrayState
     {
-        WS,
+        EndOfFile = -1,
+        Whitespace,
         Lsbr,
         Rsbr,
         Comma,
         Number,
         Name,
         N,
-        u,
-        l,
-        Null,
-        EOF
+        Nu,
+        Nul,
+        Null
     }
 }

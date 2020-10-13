@@ -2,20 +2,20 @@
 {
     public enum ArrayState
     {
-        EOF = -1,
-        WS,
+        EndOfFile = -1,
+        Whitespace,
         Lsbr,
         Rsbr,
         Comma,
         Number,
         Name,
         N,
-        u,
-        l,
+        Nu,
+        Nul,
         Null,
         Dot,
         Fraction,
         Circumflex,
-        Exp
+        Exponential
     }
 }

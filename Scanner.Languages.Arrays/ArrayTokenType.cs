@@ -2,8 +2,8 @@
 {
     public enum ArrayTokenType
     {
-        Invalid = -1,
-        EOF,
+        Void = -1,
+        EndOfFile,
         Lsbr,
         Rsbr,
         Comma,
