@@ -1,4 +1,4 @@
-# Scanner Playground
+# Scanner Playground ![.NET Core](https://github.com/ginomessmer/scanner-playground/workflows/.NET%20Core/badge.svg)
 Basic scanner samples for compiler-design written in C#.
 
 Written in Visual Studio 2019. To run tests, execute `dotnet test`. 
