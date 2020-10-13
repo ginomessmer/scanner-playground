@@ -7,8 +7,8 @@ namespace Scanner.Languages.Arrays
 {
     public class Scanner : BaseScanner
     {
-        private ArrayState _state = ArrayState.WS;
-        private ArrayTokenType _nameTokenType = ArrayTokenType.Invalid;
+        private ArrayState _currentState = ArrayState.WS;
+        private ArrayTokenType _arrayTokenType = ArrayTokenType.Invalid;
 
         public Scanner(StringReader input) : base(input)
         {
@@ -19,15 +19,15 @@ namespace Scanner.Languages.Arrays
             Token res = null;
             if (create)
             {
-                res = new Token((int)_nameTokenType, _text.ToString());
+                res = new Token((int)_arrayTokenType, _text.ToString());
                 _text.Clear();
             }
 
             if (c != IgnoreChar)
                 _text.Append((char)c);
 
-            _state = newState;
-            _nameTokenType = newNameTokenType;
+            _currentState = newState;
+            _arrayTokenType = newNameTokenType;
 
             return res;
         }
@@ -39,7 +39,7 @@ namespace Scanner.Languages.Arrays
             {
                 var c = _input.Read();
 
-                token = _state switch
+                token = _currentState switch
                 {
                     ArrayState.WS => c switch
                     {

@@ -7,7 +7,7 @@ namespace Scanner.Languages.Names
 {
     public class Scanner : BaseScanner
     {
-        private NameState _state = NameState.WS;
+        private NameState _currentState = NameState.WS;
         private NameTokenType _nameTokenType = NameTokenType.Invalid;
 
         public Scanner(StringReader input) : base(input)
@@ -26,7 +26,7 @@ namespace Scanner.Languages.Names
             if (c != IgnoreChar)
                 _text.Append((char)c);
 
-            _state = newState;
+            _currentState = newState;
             _nameTokenType = newNameTokenType;
 
             return res;
@@ -39,7 +39,7 @@ namespace Scanner.Languages.Names
             {
                 var c = _input.Read();
 
-                token = _state switch
+                token = _currentState switch
                 {
                     NameState.WS => c switch
                     {
@@ -100,7 +100,7 @@ namespace Scanner.Languages.Names
                             _ => throw new ScannerException(c)
                         },
                     NameState.EOF => Step(IgnoreChar, NameState.EOF, true, NameTokenType.EOF),
-                    _ => throw new Exception($"Unexpected state {_state}")
+                    _ => throw new Exception($"Unexpected state {_currentState}")
                 };
             }
 
